@@ -1,5 +1,6 @@
 import Announcemnent from './components/Announcemnent';
 import Categories from './components/Categories';
+import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import Newsletter from './components/Newsletter';
 import Products from './components/Products';
@@ -14,6 +15,7 @@ function App() {
       <Categories/>
       <Products/>
       <Newsletter/>
+      <Footer/>
     </div>
   );
 }
