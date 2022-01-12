@@ -12,7 +12,7 @@ router.post("/register", async (req, res) => {
       req.body.password,
       process.env.PASSWORD_SECRET
     ).toString(),
-    isAdmin: req.body.isAdmin
+    isAdmin: req.body.isAdmin,
   });
 
   try {
@@ -24,35 +24,35 @@ router.post("/register", async (req, res) => {
 });
 
 //LOGIN
-router.post('/login', async (req, res) => {
-    try{
-        const user = await User.findOne({email: req.body.email});
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
 
-        !user && res.status(401).json("Wrong User Name");
+    !user && res.status(401).json("Wrong User Name");
 
-        const hashedPassword = CryptoJS.AES.decrypt(user.password, process.env.PASSWORD_SECRET);
-        const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-        const inputPassword = req.body.password;
-        
-        originalPassword != inputPassword && 
-            res.status(401).json("Wrong Password");
+    const hashedPassword = CryptoJS.AES.decrypt(
+      user.password,
+      process.env.PASSWORD_SECRET
+    );
+    const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+    const inputPassword = req.body.password;
 
-        const accessToken = jwt.sign(
-        {
-            id: user._id,
-            isAdmin: user.isAdmin,
-        },
-        process.env.JWT_SECRET,
-            {expiresIn:"3d"}
-        );
-  
-        const { password, ...others } = user._doc;  
-        res.status(200).json({...others, accessToken});
+    originalPassword != inputPassword && res.status(401).json("Wrong Password");
 
-    }catch(err){
-        res.status(500).json(err);
-    }
+    const accessToken = jwt.sign(
+      {
+        id: user._id,
+        isAdmin: user.isAdmin,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "3d" }
+    );
 
+    const { password, ...others } = user._doc;
+    res.status(200).json({ ...others, accessToken });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
