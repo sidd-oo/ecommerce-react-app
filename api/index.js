@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
 const orderRoute = require("./routes/order");
+const productRoute = require("./routes/product");
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
-
+app.use("/api/products", productRoute);
 
 app.listen(5000, () => {
   console.log("Backend server is running on port 5000");
