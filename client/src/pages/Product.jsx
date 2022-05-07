@@ -4,6 +4,9 @@ import Announcement from "../components/Announcemnent";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
+import { useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+import axios from axios;
 
 const Container = styled.div``;
 
@@ -111,6 +114,23 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+
+  const [product, setProduct] = useState({});
+  
+  useEffect(async ()=>{
+    const getProduct = () =>{
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_HOST}/`)
+        setProduct()
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+  },[id])
+
   return (
     <Container>
       <Navbar />
