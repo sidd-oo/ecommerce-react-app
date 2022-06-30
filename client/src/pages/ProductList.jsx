@@ -55,11 +55,11 @@ const ProductList = () => {
     <Container>
       <Navbar />
       <Announcement />
-      <Title>{category}</Title>
+      <Title>{category.toUpperCase()}</Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products</FilterText>
-          <Select name = "color" onChange={handleFilter}>
+          <Select name="color" onChange={handleFilter}>
             <Option disabled>Color</Option>
             <Option>White</Option>
             <Option>Black</Option>
@@ -69,7 +69,7 @@ const ProductList = () => {
             <Option>Green</Option>
           </Select>
 
-          <Select name = "size" onChange={handleFilter}>
+          <Select name="size" onChange={handleFilter}>
             <Option disabled>Size</Option>
             <Option>XS</Option>
             <Option>S</Option>
@@ -81,13 +81,18 @@ const ProductList = () => {
         <Filter>
           <FilterText>Sort Products</FilterText>
           <Select onChange={(e) => setSort(e.target.value)}>
-            <Option value = "new">Newest</Option>
-            <Option value = "asc">Price (asc)</Option>
-            <Option value = "des">Price (desc)</Option>
+            <Option value="new">Newest</Option>
+            <Option value="asc">Price (asc)</Option>
+            <Option value="des">Price (desc)</Option>
           </Select>
         </Filter>
       </FilterContainer>
-      <Products category = {category} filters = {filters} sort = {sort}/>
+
+      {category ?
+        <Products category={category} filters={filters} sort={sort} /> :
+        <Products filters={filters} sort={sort} />
+      }
+
       <Newsletter />
       <Footer />
     </Container>

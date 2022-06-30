@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { SearchOutlined, ShoppingCart } from "@mui/icons-material";
 import { Badge } from "@mui/material";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
@@ -60,6 +62,7 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  const quantity = useSelector(state => state.cart.cartQty)
   return (
     <div>
       <Container>
@@ -72,16 +75,20 @@ const Navbar = () => {
             </SearchContainer>
           </Left>
           <Center>
-            <Logo>BUYME.</Logo>
+            <Link to="/" style={{textDecoration: "none", color: "black"}}>
+              <Logo>BUYME.</Logo>
+            </Link>
           </Center>
           <Right>
             <MenuItem>REGISTER</MenuItem>
             <MenuItem>SIGN IN</MenuItem>
-            <MenuItem>
-              <Badge badgeContent={4} color="primary">
-                <ShoppingCart color="action" />
-              </Badge>
-            </MenuItem>
+            <Link to="/cart">
+              <MenuItem>
+                <Badge badgeContent={quantity} color="primary">
+                  <ShoppingCart color="action" />
+                </Badge>
+              </MenuItem>
+            </Link>
           </Right>
         </Wrapper>
       </Container>
