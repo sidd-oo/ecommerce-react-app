@@ -4,6 +4,11 @@ import styled from "styled-components";
 import Announcement from "../components/Announcemnent";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import StripeCheckout from 'react-stripe-checkout'
+import { useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   margin-bottom: 100px;
@@ -160,6 +165,35 @@ const Button = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const [stripeToken, setStripeToken] = useState(null);
+  const navigate = useNavigate();
+
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_HOST}api/checkout/payment`, {
+          tokenId: stripeToken.id,
+          amount: 500,
+        });
+        navigate("/success",
+        //  {
+        //   state: {
+        //     stripeData: res.data,
+        //     products: cart,
+        //   }
+        // }
+        );
+      } catch (err) {
+        console.log(err)
+      }
+    };
+    stripeToken && makeRequest();
+  }, [stripeToken, cart.totalPrice, navigate, cart]);
+
   return (
     <Container>
       <Navbar />
@@ -188,8 +222,8 @@ const Cart = () => {
                       <ProductId>
                         <b>ID : </b> {product._id}
                       </ProductId>
-                      <b>Color : 
-                        <ProductColor color={product.color.toLowerCase()}>
+                      <b>Color :
+                        <ProductColor color={product.color?.toLowerCase()}>
                         </ProductColor>
                       </b>
                       <ProductSize>
@@ -228,7 +262,18 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ {cart.totalPrice}</SummaryItemPrice>
             </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
+            <StripeCheckout
+              name="BUYME."
+              image="https://avatars.githubusercontent.com/u/1486366?v=4"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.totalPrice}`}
+              amount={cart.totalPrice * 100}
+              token={onToken}
+              stripeKey={process.env.REACT_APP_STRIPE_KEY}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>
