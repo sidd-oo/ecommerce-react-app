@@ -58,11 +58,14 @@ const Products = ({ category, filters, sort }) => {
 
   return (
     <Container>
+      {
+        console.log(products)
+      }
       {category
         ? filteredProducts.map((item) => {
           return <Product item={item} key={item._id} />;
         })
-        : products.slice(0, 8).map((item) => {
+        : products.map((item) => {
           return <Product item={item} key={item._id} />;
         })
       }

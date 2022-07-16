@@ -179,13 +179,14 @@ const Cart = () => {
           tokenId: stripeToken.id,
           amount: 500,
         });
+        console.log("CHeckout clicked")
         navigate("/success",
-        //  {
-        //   state: {
-        //     stripeData: res.data,
-        //     products: cart,
-        //   }
-        // }
+          {
+            state: {
+              stripeData: res.data,
+              products: cart,
+            }
+          }
         );
       } catch (err) {
         console.log(err)
