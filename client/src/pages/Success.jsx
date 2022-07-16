@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 const Success = () => {
   const location = useLocation();
   const data = location.state.stripeData;
-  const cart = location.state.cart;
+  const cart = location.state.products;
   const currentUser = useSelector((state) => state.user.currentUser);
   const [orderId, setOrderId] = useState(null);
 
@@ -17,7 +18,7 @@ const Success = () => {
   useEffect(() => {
     const createOrder = async () => {
       try {
-        const res = await axios.post("/orders/", {
+        const res = await axios.post("api/orders/", {
           userId: currentUser._id,
           products: cart.products.map((item) => ({
             productId: item._id,
@@ -49,7 +50,11 @@ const Success = () => {
       {orderId
         ? `Order has been created successfully. Your order number is ${orderId}`
         : `Successfull. Your order is being prepared...`}
-      <button style={{ padding: 10, marginTop: 20 }}>Go to Homepage</button>
+      <button style={{ padding: 10, marginTop: 20 }}>
+        <Link to = "/">
+        GO TO HOMEPAGE
+        </Link>
+        </button>
     </div>
   );
 };

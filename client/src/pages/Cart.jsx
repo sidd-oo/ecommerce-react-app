@@ -179,7 +179,6 @@ const Cart = () => {
           tokenId: stripeToken.id,
           amount: 500,
         });
-        console.log("CHeckout clicked")
         navigate("/success",
           {
             state: {
