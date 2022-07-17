@@ -3,10 +3,11 @@ import { login } from "../redux/apiCalls";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import Navbar from "../components/Navbar";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 60px);
   background: linear-gradient(
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
@@ -72,35 +73,38 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isFetching, error} = useSelector((state) => state.user);
+  const { isFetching, error } = useSelector((state) => state.user);
 
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { email, password });
   };
   return (
-    <Container>
-      <Wrapper>
-        <Title>SIGN IN</Title>
-        <Form>
-          <Input
-            placeholder="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            placeholder="password"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button onClick={handleClick} disabled={isFetching}>
-            LOGIN
-          </Button>
-          {error && <Error>Something went wrong...</Error>}
-          <Link>Don't you remember your password ?</Link>
-          <Link>Create a new account</Link>
-        </Form>
-      </Wrapper>
-    </Container>
+    <>
+      <Navbar />
+      <Container>
+        <Wrapper>
+          <Title>SIGN IN</Title>
+          <Form>
+            <Input
+              placeholder="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder="password"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button onClick={handleClick} disabled={isFetching}>
+              LOGIN
+            </Button>
+            {error && <Error>Something went wrong...</Error>}
+            <Link>Don't you remember your password ?</Link>
+            <Link>Create a new account</Link>
+          </Form>
+        </Wrapper>
+      </Container>
+    </>
   );
 };
 

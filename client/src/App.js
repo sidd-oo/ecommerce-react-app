@@ -9,11 +9,11 @@ import Success from "./pages/Success";
 import { useSelector } from "react-redux";
 
 function App() {
-  const user = useSelector(state=> state.user.currentUser);
+  const user = useSelector(state=> state.user?.currentUser);
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={user ? <Home /> : <Login />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:category" element={<ProductList />} />
         <Route path="/product/:id" element={<Product />} />
