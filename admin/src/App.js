@@ -6,7 +6,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
 } from "react-router-dom";
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
