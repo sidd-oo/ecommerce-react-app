@@ -102,10 +102,14 @@ const Navbar = () => {
                 </MenuItem>
               </Link>}
 
-            {location.pathname == '/register' ?
+            {location.pathname == '/register' && (user === null) &&
               (<Link to="/login" style={{ textDecoration: 'none' }}>
                 <MenuItem >SIGN IN</MenuItem>
-              </Link>) :
+              </Link>
+              )
+            }
+
+            {location.pathname == '/login' && (user === null) &&
               (
                 <Link to="/register" style={{ textDecoration: 'none' }}>
                   <MenuItem >REGISTER</MenuItem>
