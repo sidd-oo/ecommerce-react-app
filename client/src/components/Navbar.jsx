@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { SearchOutlined, ShoppingCart } from "@mui/icons-material";
 import { Badge } from "@mui/material";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
@@ -66,15 +66,14 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   const quantity = useSelector(state => state.cart.cartQty);
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.user.currentUser);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignOut = () => {
-    console.log("Start signout")
     localStorage.clear();
     navigate("/login")
     navigate(0);
-    console.log("End Signout")
   }
   return (
     <div>
@@ -93,22 +92,29 @@ const Navbar = () => {
             </Link>
           </Center>
           <Right>
-            {/* {user && <MenuItem> HELLO {useSelector(state => state.user?.currentUser.username.toUpperCase())}</MenuItem>} */}
-            <Link to="/register">
-              {!user && <MenuItem> REGISTER </MenuItem>}
-            </Link>
-            {user && <Link to="/cart">
-              <MenuItem>
-                <Badge badgeContent={quantity} color="primary">
-                  <ShoppingCart color="action" />
-                </Badge>
-              </MenuItem>
-            </Link>}
-            {user && <MenuItem onClick={() => { handleSignOut() }}>SIGN OUT</MenuItem>}
-            {!user &&
-              <Link>
-                <MenuItem onClick={() => { handleSignOut() }}>REGISTER</MenuItem>
-              </Link>
+
+            {!(user == null) &&
+              <Link to="/cart">
+                <MenuItem>
+                  <Badge badgeContent={quantity} color="primary">
+                    <ShoppingCart color="action" />
+                  </Badge>
+                </MenuItem>
+              </Link>}
+
+            {location.pathname == '/register' ?
+              (<Link to="/login" style={{ textDecoration: 'none' }}>
+                <MenuItem >SIGN IN</MenuItem>
+              </Link>) :
+              (
+                <Link to="/register" style={{ textDecoration: 'none' }}>
+                  <MenuItem >REGISTER</MenuItem>
+                </Link>
+              )
+            }
+
+            {!(user == null) &&
+              <MenuItem onClick={() => { handleSignOut() }}>SIGN OUT</MenuItem>
             }
           </Right>
         </Wrapper>
