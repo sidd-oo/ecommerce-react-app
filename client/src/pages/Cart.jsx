@@ -8,7 +8,7 @@ import StripeCheckout from 'react-stripe-checkout'
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   margin-bottom: 100px;
@@ -201,12 +201,27 @@ const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <Link to="/products" style={{ textDecoration: "none" }}>
+            <TopButton>CONTINUE SHOPPING</TopButton>
+          </Link>
           <TopTexts>
             <TopText>Shopping Bag(2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
+          <StripeCheckout
+            name="BUYME."
+            image="https://avatars.githubusercontent.com/u/1486366?v=4"
+            billingAddress
+            shippingAddress
+            description={`Your total is $${cart.totalPrice}`}
+            amount={cart.totalPrice * 100}
+            token={onToken}
+            stripeKey={process.env.REACT_APP_STRIPE_KEY}
+          >
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <TopButton type="filled">CHECKOUT NOW</TopButton>
+            </Link>
+          </StripeCheckout>
         </Top>
         <Bottom>
           <Info>

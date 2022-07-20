@@ -31,8 +31,11 @@ const Success = () => {
             token: `Bearer ${TOKEN}`
           }
         });
+        console.log(res);
         setOrderId(res.data._id);
-      } catch { }
+      } catch(err) {
+        console.log(err);
+       }
     };
     data && createOrder();
   }, [cart, data, currentUser]);
@@ -45,14 +48,18 @@ const Success = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        color: "teal",
+        fontWeight: "bold",
+        fontSize: "25px",
+        backgroundColor: "grey",
       }}
     >
       {orderId
         ? `Order has been created successfully. Your order number is ${orderId}`
         : `Successfull. Your order is being prepared...`}
-      <button style={{ padding: 10, marginTop: 20 }}>
-        <Link to = "/">
-        GO TO HOMEPAGE
+      <button style={{ padding: 10, marginTop: 20 , }}>
+        <Link to = "/" style={{textDecoration: 'none', color: 'teal', fontSize: '18px', fontWeight: 'bold'}}>
+        CONTINUE SHOPPING (BUYNOW.)
         </Link>
         </button>
     </div>
