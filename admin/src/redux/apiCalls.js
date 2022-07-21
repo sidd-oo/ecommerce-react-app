@@ -14,11 +14,12 @@ import {
   addProductStart,
   addProductSuccess,
 } from "./productRedux";
+import axios from "axios";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
-    const res = await publicRequest.post("/auth/login", user);
+    const res = await axios.post(`${process.env.REACT_APP_BACKEND_HOST}auth/login`, user);
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());
