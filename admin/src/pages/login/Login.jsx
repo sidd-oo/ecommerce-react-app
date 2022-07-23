@@ -4,7 +4,7 @@ import { login } from "../../redux/apiCalls";
 import { useHistory } from "react-router-dom";
 
 
-const Login = () => {
+const Login = ({loginStatus, setLoginStatus}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -12,11 +12,11 @@ const Login = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { email, password });
+    login(dispatch, { email, password }, setLoginStatus);
     history.push("/");
-    history.go(0);
   };
 
+  console.log(loginStatus);
   return (
     <div
       style={{

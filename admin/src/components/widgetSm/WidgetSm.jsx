@@ -1,7 +1,7 @@
 import "./widgetSm.css";
 import { Visibility } from "@material-ui/icons";
 import { useEffect, useState } from "react";
-import { userRequest } from "../../requestMethods";
+import axios from "axios";
 
 export default function WidgetSm() {
   const [users, setUsers] = useState([]);
@@ -9,13 +9,18 @@ export default function WidgetSm() {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await userRequest.get("users/?new=true");
+        const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken;
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_HOST}users/?new=true`, {
+          headers: {
+            token: `Bearer ${TOKEN}`
+          }
+        });
         setUsers(res.data);
-      } catch {}
+      } catch { }
     };
     getUsers();
   }, []);
-  
+
   return (
     <div className="widgetSm">
       <span className="widgetSmTitle">New Join Members</span>

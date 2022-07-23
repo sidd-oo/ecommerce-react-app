@@ -1,5 +1,4 @@
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
-import { publicRequest, userRequest } from "../requestMethods";
 import {
   getProductFailure,
   getProductStart,
@@ -15,12 +14,14 @@ import {
   addProductSuccess,
 } from "./productRedux";
 import axios from "axios";
+import { publicRequest } from "../requestMethods";
 
-export const login = async (dispatch, user) => {
+export const login = async (dispatch, user, setLoginStatus) => {
   dispatch(loginStart());
   try {
     const res = await axios.post(`${process.env.REACT_APP_BACKEND_HOST}auth/login`, user);
     dispatch(loginSuccess(res.data));
+    setLoginStatus(true);
   } catch (err) {
     dispatch(loginFailure());
   }
@@ -57,8 +58,14 @@ export const updateProduct = async (id, product, dispatch) => {
 };
 export const addProduct = async (product, dispatch) => {
   dispatch(addProductStart());
+  const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken;
   try {
-    const res = await userRequest.post(`/products`, product);
+    const res = await axios.post(`${process.env.REACT_APP_BACKEND_HOST}/products`,
+      product, {
+      headers: {
+        token: `Bearer ${TOKEN}`
+      }
+    });
     dispatch(addProductSuccess(res.data));
   } catch (err) {
     dispatch(addProductFailure());

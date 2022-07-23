@@ -5,7 +5,7 @@ import { productData } from "../../dummyData";
 import { Publish } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
-import { userRequest } from "../../requestMethods";
+import axios from "axios";
 
 export default function Product() {
   const location = useLocation();
@@ -37,7 +37,12 @@ export default function Product() {
   useEffect(() => {
     const getStats = async () => {
       try {
-        const res = await userRequest.get("orders/income?pid=" + productId);
+        const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken;
+        const res = await axios.get("orders/income?pid=" + productId, {
+          headers: {
+            token: `Bearer ${TOKEN}`
+          }
+        });
         const list = res.data.sort((a,b)=>{
             return a._id - b._id
         })

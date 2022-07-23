@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { userRequest } from "../../requestMethods";
 import "./widgetLg.css";
 import {format} from "timeago.js"
+import axios from "axios";
 
 export default function WidgetLg() {
   const [orders, setOrders] = useState([]);
@@ -9,7 +9,12 @@ export default function WidgetLg() {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const res = await userRequest.get("orders");
+        const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken;
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_HOST}orders`, {
+        headers: {
+          token: `Bearer ${TOKEN}`
+        }
+      });
         setOrders(res.data);
       } catch {}
     };

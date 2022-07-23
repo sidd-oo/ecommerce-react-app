@@ -5,7 +5,7 @@ import { userData } from "../../dummyData";
 import WidgetSm from "../../components/widgetSm/WidgetSm";
 import WidgetLg from "../../components/widgetLg/WidgetLg";
 import { useEffect, useMemo, useState } from "react";
-import { userRequest } from "../../requestMethods";
+import axios from "axios";
 
 export default function Home() {
   const [userStats, setUserStats] = useState([]);
@@ -31,14 +31,19 @@ export default function Home() {
   useEffect(() => {
     const getStats = async () => {
       try {
-        const res = await userRequest.get("/users/stats");
+        const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken;
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_HOST}users/stats`, {
+          headers: {
+            token: `Bearer ${TOKEN}`
+          }
+        });
         res.data.map((item) =>
           setUserStats((prev) => [
             ...prev,
             { name: MONTHS[item._id - 1], "Active User": item.total },
           ])
         );
-      } catch {}
+      } catch { }
     };
     getStats();
   }, [MONTHS]);

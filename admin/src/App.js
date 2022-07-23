@@ -14,22 +14,18 @@ import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 import Login from "./pages/login/Login";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function App() {
-  // const admin = useSelector((state) => state.user.currentUser.isAdmin);
-  const admin = !(JSON.parse(localStorage.getItem("persist:root")) === null) && !(JSON.parse(JSON.parse(localStorage.getItem("persist:root"))?.user).currentUser === null) &&
-  JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user);
+
+  const [loginStatus, setLoginStatus] = useState(false);
   return (
     <Router>
       <Switch>
-        <Route path="/login">
-          <Login />
+        <Route exact path="/login">
+          <Login loginStatus = {loginStatus} setLoginStatus={setLoginStatus} />
         </Route>
-        <Route path="*">
-          <Login />
-        </Route>
-          {admin && (
+        {loginStatus && (
           <>
             <Topbar />
             <div className="container">
@@ -37,26 +33,23 @@ function App() {
               <Route exact path="/">
                 <Home />
               </Route>
-              <Route path="/users">
+              <Route exact path="/users">
                 <UserList />
               </Route>
-              <Route path="/user/:userId">
+              <Route exact path="/user/:userId">
                 <User />
               </Route>
-              <Route path="/newUser">
+              <Route exact path="/newUser">
                 <NewUser />
               </Route>
-              <Route path="/products">
+              <Route exact path="/products">
                 <ProductList />
               </Route>
-              <Route path="/product/:productId">
+              <Route exact path="/product/:productId">
                 <Product />
               </Route>
-              <Route path="/newproduct">
+              <Route exact path="/newproduct">
                 <NewProduct />
-              </Route>
-              <Route path="*">
-                <Home />
               </Route>
             </div>
           </>

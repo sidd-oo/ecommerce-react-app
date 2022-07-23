@@ -27,8 +27,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    
-    if(!user){
+    if (!user) {
       return res.status(401).json("Wrong User Name");
     }
 
@@ -39,7 +38,7 @@ router.post("/login", async (req, res) => {
     const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
     const inputPassword = req.body.password;
 
-    if(originalPassword != inputPassword){
+    if (originalPassword != inputPassword) {
       return res.status(401).json("Wrong Password");
     }
     const accessToken = jwt.sign(
