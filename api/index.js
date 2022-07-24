@@ -19,7 +19,8 @@ mongoose
     console.log(err);
   });
 
-app.use(cors({ origin: ["https://ecommerce-react-app-admin.vercel.app/", "https://ecommerce-react-app-pearl.vercel.app/"] }));
+app.use(cors());  
+// app.use(cors({ origin: [process.env.ADMIN_PROXY, process.env.CLIENT_PROXY] }));
 app.use(express.json());
 
 app.use("/api/auth", authRoute);
