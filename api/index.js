@@ -13,22 +13,21 @@ const cors = require("cors");
 dotenv.config();
 
 mongoose
-.connect(process.env.MONGO_URL)
-.then(() => console.log("DB Connection Successfull"))
-.catch((err) => {
-  console.log(err);
-});
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("DB Connection Successfull"))
+  .catch((err) => {
+    console.log(err);
+  });
 
-app.use(cors({ orgin: process.env.ADMIN_PROXY }));
-app.use(cors({ orgin: process.env.CLIENT_PROXY }));
-app.use(express.json());  
+app.use(cors({ origin: [process.env.ADMIN_PROXY, process.env.CLIENT_PROXY] }));
+app.use(express.json());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/products", productRoute);
 app.use("/api/carts", cartRoute);
-app.use("/api/checkout",stripeRoute)
+app.use("/api/checkout", stripeRoute)
 
 app.listen(proceSs.env.PORT_NO || 5000, () => {
   console.log("Backend server is running");
