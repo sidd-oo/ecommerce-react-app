@@ -29,6 +29,6 @@ app.use("/api/products", productRoute);
 app.use("/api/carts", cartRoute);
 app.use("/api/checkout", stripeRoute)
 
-app.listen(process.env.PORT_NO || 5000, () => {
-  console.log("Backend server is running");
+app.listen(process.env.PORT || 8800, () => {
+  console.log("Backend server is running...");
 });
