@@ -19,10 +19,9 @@ mongoose
     console.log(err);
   });
 
-app.use(cors());  
-app.use(cors({ orgin: process.env.ADMIN_PROXY }));
-app.use(cors({ orgin: process.env.CLIENT_PROXY }));
-app.use(express.json());
+  app.use(cors({ orgin: process.env.ADMIN_PROXY }));
+  app.use(cors({ orgin: process.env.CLIENT_PROXY }));
+  app.use(express.json());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
